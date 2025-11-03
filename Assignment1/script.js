@@ -17,6 +17,7 @@ function renderTable() {
                    </tr>`;
         tbody.innerHTML += row;
     });
+    
 }
 
 function addStudent() {
