@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Expense Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      padding: 30px;
+    }
+    .container {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0px 2px 8px rgba(0,0,0,0.2);
+      width: 500px;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #333;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    button {
+      width: 100%;
+      margin-top: 15px;
+      padding: 10px;
+      background: #28a745;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #218838;
+    }
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 8px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background: #f1f1f1;
+    }
+    .total {
+      margin-top: 10px;
+      text-align: right;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .delete-btn {
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Expense Tracker</h2>
+    
+    <label>Expense Name</label>
+    <input type="text" id="name" placeholder="e.g. Groceries">
+
+    <label>Amount (₹)</label>
+    <input type="number" id="amount" placeholder="e.g. 500">
+
+    <label>Description</label>
+    <input type="text" id="description" placeholder="e.g. Bought fruits and vegetables">
+
+    <label>Date</label>
+    <input type="date" id="date">
+
+    <button onclick="addExpense()">Add Expense</button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Amount</th>
+          <th>Description</th>
+          <th>Date</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="expense-list">
+        <!-- Expenses will appear here -->
+      </tbody>
+    </table>
+
+    <div class="total" id="total">Total: ₹0</div>
+  </div>
+
+  <script>
+    let totalAmount = 0;
+
+    function addExpense() {
+      const name = document.getElementById("name").value.trim();
+      const amount = parseFloat(document.getElementById("amount").value);
+      const description = document.getElementById("description").value.trim();
+      const date = document.getElementById("date").value;
+
+      if (!name || isNaN(amount) || amount <= 0 || !date) {
+        alert("Please fill all fields correctly!");
+        return;
+      }
+
+      
+      const table = document.getElementById("expense-list");
+      const row = table.insertRow();
+
+      row.insertCell(0).innerText = name;
+      row.insertCell(1).innerText = "₹" + amount;
+      row.insertCell(2).innerText = description;
+      row.insertCell(3).innerText = date;
+
+    
+      const deleteCell = row.insertCell(4);
+      const delBtn = document.createElement("button");
+      delBtn.innerText = "Delete";
+      delBtn.className = "delete-btn";
+      delBtn.onclick = function () {
+        totalAmount -= amount;
+        document.getElementById("total").innerText = "Total: ₹" + totalAmount;
+        table.deleteRow(row.rowIndex - 0);
+      };
+      deleteCell.appendChild(delBtn);
+
+      
+      totalAmount += amount;
+      document.getElementById("total").innerText = "Total: ₹" + totalAmount;
+
+      
+      document.getElementById("name").value = "";
+      document.getElementById("amount").value = "";
+      document.getElementById("description").value = "";
+      document.getElementById("date").value = "";
+    }
+  </script>
+</body>
+</html>
